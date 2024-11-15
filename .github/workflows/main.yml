@@ -14,28 +14,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  windows-build:
-    name: Windows Build and Test
+  windows-publish:
+    name: Publish VSIX
     runs-on: windows-2022
-
     steps:
       - uses: actions/checkout@v3
-
-      - name: Build
+      - name: Build VSIX
         shell: powershell
-        run: Scripts\Build.ps1 -ci -config Debug -build 
-
-      - name: Test
-        shell: powershell
-        run: Scripts\Build.ps1 -ci -config Debug -test
-
-      - name: Test Extra
-        shell: powershell
-        run: Scripts\Build.ps1 -ci -config Debug -testExtra
-
-      - name: Upload Artifacts
+        run: Scripts\Build.ps1 -ci -build -updateVsixVersion -config Release
+      - name: Upload VSIX Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: Logs
-          path: Binaries\Logs
-
+          name: Vsix
+          path: Binaries\Deploy
